@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="es-CO">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="theme-color" content="#090e18" />
+<meta name="description" content="Distribución del dólar en Colombia: gráficas de cajas de la TRM oficial, evolución histórica y análisis estadístico." />
+<title>TRM Lab | Análisis del dólar en Colombia</title>
+<link rel="stylesheet" href="/styles.css" />
+<script defer src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
+<script defer src="/app.js"></script>
+</head>
+<body>
+<a class="skip" href="#main">Saltar al contenido principal</a>
+<div class="layout">
+  <aside class="sidebar" id="sidebar" aria-label="Navegación">
+    <a class="brand" href="#inicio" aria-label="TRM Lab, ir al inicio">
+      <span class="brand-mark"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M5 25V7h5v18M14 25V17h5v8M23 25V11h5v14" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"/><circle cx="16" cy="6" r="2" fill="#83c5ff"/></svg></span>
+      <span><strong>TRM<span class="accent">LAB</span></strong><small>INTELIGENCIA CAMBIARIA</small></span>
+    </a>
+    <div class="side-label">ESPACIO DE TRABAJO</div>
+    <nav class="side-nav" aria-label="Secciones del dashboard">
+      <a class="nav-link active" href="#inicio"><span class="nav-ico">◫</span> Resumen general</a>
+      <a class="nav-link" href="#distribucion"><span class="nav-ico">▥</span> Distribución · Box plots</a>
+      <a class="nav-link" href="#evolucion"><span class="nav-ico">⌁</span> Evolución histórica</a>
+      <a class="nav-link" href="#seaborn"><span class="nav-ico">▦</span> Análisis Seaborn</a>
+      <a class="nav-link" href="#metodologia"><span class="nav-ico">ⓘ</span> Metodología</a>
+    </nav>
+    <div class="sidebar-bottom">
+      <div class="source-card"><span class="source-bullet"></span><span><b>Datos oficiales</b><small>Superfinanciera de Colombia</small></span></div>
+      <p>Proyecto académico · Trade Marketing<br>TRM en COP por 1 USD</p>
+    </div>
+  </aside>
+  <div class="main-area">
+    <header class="topbar"><div class="topbar-left"><button id="mobileMenu" class="icon-btn mobile-menu" type="button" aria-label="Abrir menú">☰</button><span class="breadcrumb">Panel de análisis</span><span class="breadcrumb-chevron">/</span><strong>Mercado de divisas</strong></div><div class="topbar-right"><span class="live-label"><span class="dot"></span> FUENTE OFICIAL</span><span class="date-now" id="todayLabel">Colombia · GMT-5</span></div></header>
+    <main id="main">
+      <section id="inicio" class="hero">
+        <div class="eyebrow"><span class="eyebrow-line"></span> ANÁLISIS CAMBIARIO · COLOMBIA</div>
+        <div class="hero-row"><div><h1>El dólar, <span>en perspectiva.</span></h1><p>Explora la distribución, volatilidad y evolución histórica de la tasa de cambio USD/COP mediante análisis estadístico interactivo.</p></div>
+          <div class="hero-actions"><button id="refreshBtn" class="btn secondary" type="button"><span class="refresh-icon">↻</span> Actualizar datos</button><button id="exportBtn" class="btn primary" type="button">↓ Exportar CSV</button></div>
+        </div>
+      </section>
+      <div id="errorMessage" class="error-banner" role="alert" hidden></div>
+      <div id="warningMessage" class="warning-banner" role="status" hidden></div>
+      <section class="kpis" aria-label="Indicadores clave">
+        <div class="kpi kpi-featured"><div class="kpi-top"><span>ÚLTIMA TRM OFICIAL</span><span class="kpi-symbol">USD / COP</span></div><div class="kpi-value" id="latestValue">—<small> COP</small></div><div class="kpi-footer"><span id="deltaChip" class="delta neutral">Sin datos</span><span id="latestDate">Fecha de vigencia —</span></div></div>
+        <div class="kpi"><div class="kpi-top"><span>PROMEDIO DEL PERIODO</span><span class="mini-glyph">μ</span></div><div class="kpi-value" id="meanValue">—</div><div class="kpi-footer">Media aritmética <span class="kpi-sub">COP / USD</span></div></div>
+        <div class="kpi"><div class="kpi-top"><span>MEDIANA · Q2</span><span class="mini-glyph">Q₂</span></div><div class="kpi-value" id="medianValue">—</div><div class="kpi-footer">Percentil 50 <span class="kpi-sub">COP / USD</span></div></div>
+        <div class="kpi"><div class="kpi-top"><span>AMPLITUD DEL PERIODO</span><span class="mini-glyph">↕</span></div><div class="kpi-value" id="rangeValue">—</div><div class="kpi-footer"><span id="rangeSub">Máximo − mínimo</span> <span class="kpi-sub">COP</span></div></div>
+      </section>
+      <section class="filter-panel" aria-label="Filtros">
+        <div class="filter-intro"><span class="filter-icon">☷</span><div><strong>Personaliza el análisis</strong><small>Selecciona un periodo y una agrupación</small></div></div>
+        <div class="period-buttons" role="group" aria-label="Periodo rápido"><button data-period="6" type="button">6 meses</button><button data-period="12" type="button">1 año</button><button data-period="24" class="selected" type="button">2 años</button><button data-period="60" type="button">5 años</button></div>
+        <div class="filter-dates"><label for="startDate">Desde</label><input id="startDate" type="date" aria-label="Fecha inicial"/><label for="endDate">Hasta</label><input id="endDate" type="date" aria-label="Fecha final"/><button id="applyBtn" type="button" class="btn apply">Aplicar</button></div>
+      </section>
+      <section id="distribucion" class="panel primary-panel" aria-labelledby="boxTitle">
+        <div class="panel-head"><div><div class="section-tag"><span class="light-dot"></span> VISUALIZACIÓN PRINCIPAL</div><h2 id="boxTitle">Distribución de la tasa de cambio</h2><p>Gráficos de cajas que muestran la dispersión y los valores atípicos de la TRM.</p></div><div class="chart-actions"><div class="segmented" role="group" aria-label="Agrupar gráficos de cajas"><button class="active" data-group="month" type="button">Mensual</button><button data-group="quarter" type="button">Trimestral</button><button data-group="year" type="button">Anual</button></div><button id="downloadPlot" type="button" class="icon-btn plot-export" title="Guardar gráfico como PNG" aria-label="Guardar gráfico de cajas en PNG">↓</button></div></div>
+        <div class="legend"><span><i class="legend-box"></i> Rango intercuartílico</span><span><i class="legend-line"></i> Mediana</span><span><i class="legend-point"></i> Valores atípicos</span></div>
+        <div id="boxChart" class="plot main-plot" role="img" aria-label="Diagrama de cajas de la TRM, actualizado con los filtros"></div>
+        <div class="chart-explainer"><div><b>¿Cómo leer una caja?</b><span>La caja contiene el 50% central de los datos (Q1–Q3); la línea marca la mediana. Los bigotes siguen la regla de 1,5 × RIQ y los puntos exteriores representan valores atípicos.</span></div><div class="nobs"><b id="obsCounter">—</b><small>observaciones en el periodo</small></div></div>
+      </section>
+      <section class="two-cols" id="evolucion">
+        <div class="panel"><div class="panel-head compact"><div><div class="section-tag">SERIE TEMPORAL</div><h2>Movimiento del dólar</h2><p>Evolución de la TRM durante el periodo seleccionado.</p></div></div><div id="trendChart" class="plot secondary-plot" role="img" aria-label="Gráfico de líneas de la evolución histórica de la TRM"></div></div>
+        <div class="panel"><div class="panel-head compact"><div><div class="section-tag">PATRONES DEL MERCADO</div><h2>Mapa de calor mensual</h2><p>Promedio mensual de la TRM, por año.</p></div></div><div id="heatmapChart" class="plot secondary-plot" role="img" aria-label="Mapa de calor de los promedios mensuales de la TRM"></div></div>
+      </section>
+      <section class="bottom-grid">
+        <div id="seaborn" class="panel"><div class="panel-head compact"><div><div class="section-tag">VISUALIZACIÓN GENERADA EN PYTHON</div><h2>Box plot con Seaborn</h2><p>Renderizado en el servidor, regenerado cuando cambias los filtros.</p></div><span class="python-chip">PYTHON + SEABORN</span></div><div class="seaborn-visual"><img id="seabornImg" src="" alt="Gráfico de cajas generado con Seaborn y matplotlib, basado en registros de TRM del periodo" loading="lazy"/><div id="seabornLoading" class="image-loading">El gráfico se generará al obtener los datos oficiales.</div></div></div>
+        <div class="panel stats-panel"><div class="panel-head compact"><div><div class="section-tag">LECTURA ESTADÍSTICA</div><h2>Dentro de la distribución</h2><p>Resumen calculado del periodo.</p></div></div><div class="stat-rows"><div><span>Primer cuartil <small>Q1 · 25%</small></span><strong id="q1Value">—</strong></div><div><span>Tercer cuartil <small>Q3 · 75%</small></span><strong id="q3Value">—</strong></div><div><span>Rango intercuartílico <small>Q3 − Q1</small></span><strong id="iqrValue">—</strong></div><div><span>Desviación estándar</span><strong id="stdValue">—</strong></div><div><span>Valores atípicos <small>criterio 1,5 × RIQ global</small></span><strong id="outlierValue">—</strong></div><div><span>Variación del periodo</span><strong id="changeValue">—</strong></div></div><div class="reading-note" id="insightText">Selecciona un intervalo para consultar el resumen de su distribución.</div></div>
+      </section>
+      <section id="metodologia" class="method"><div class="method-text"><span class="section-tag">TRANSPARENCIA DE LOS DATOS</span><h2>Una fuente. Cifras verificables.</h2><p>La TRM es el valor oficial en pesos colombianos por dólar estadounidense, calculado y certificado por la <b>Superintendencia Financiera de Colombia</b>. No es el precio de compra o venta en tiempo real de una casa de cambio.</p><p>Los registros se obtienen de <a href="https://www.datos.gov.co/Econom-a-y-Finanzas/Tasa-de-Cambio-Representativa-del-Mercado-TRM/32sa-8pi3" target="_blank" rel="noopener noreferrer">Datos Abiertos Colombia ↗</a>. La aplicación consulta la API en Python y renueva su caché cada 20 minutos. Los gráficos utilizan fechas de inicio de vigencia, sin rellenar artificialmente fines de semana o festivos.</p></div><div class="method-aside"><div><span>FUENTE</span><strong>Superfinanciera</strong></div><div><span>ACTUALIZACIÓN EN APLICACIÓN</span><strong>20 minutos</strong></div><div><span>ÚLTIMA FECHA DISPONIBLE</span><strong id="footerDate">—</strong></div><div><span>ÚLTIMA CONSULTA API</span><strong id="syncDate">—</strong></div></div></section>
+      <footer class="footer"><span>TRM<span class="accent">LAB</span> · Proyecto de visualización de datos</span><span>Python · Pandas · Seaborn · Plotly · HTML/CSS/JS</span></footer>
+    </main>
+  </div>
+</div>
+</body>
+</html>
