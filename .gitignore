@@ -1,0 +1,5 @@
+__pycache__/
+*.pyc
+.pytest_cache/
+trm_snapshot.csv
+.DS_Store
