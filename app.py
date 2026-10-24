@@ -213,22 +213,22 @@ def build_payload(df: pd.DataFrame, filtered: pd.DataFrame, filt: dict, meta: di
 def seaborn_png(frame: pd.DataFrame) -> bytes:
     """Seaborn nativo: el servidor regenera una imagen según los filtros."""
     with _graph_lock:
-        sns.set_theme(style="whitegrid", context="notebook", font_scale=1.02)
+        sns.set_theme(style="darkgrid", context="notebook", font_scale=1.02)
         fig, ax = plt.subplots(figsize=(11.2, 4.2), dpi=150)
-        fig.patch.set_facecolor("#111827")
-        ax.set_facecolor("#111827")
+        fig.patch.set_facecolor("#111114")
+        ax.set_facecolor("#111114")
         order = list(dict.fromkeys(frame["grupo"].to_list()))
         sns.boxplot(data=frame, x="grupo", y="valor", order=order, ax=ax,
-                    color="#57A6F9", saturation=0.75, fliersize=3, linewidth=1.15,
-                    medianprops={"color":"#fbbf24", "linewidth":2.4},
-                    boxprops={"edgecolor":"#b7d8fa"}, whiskerprops={"color":"#8ca9ca"},
-                    capprops={"color":"#8ca9ca"})
-        ax.set_title("Distribución de la TRM · Análisis Seaborn", loc="left", fontsize=14, weight="bold", color="#f8fafc", pad=20)
-        ax.set_ylabel("COP por USD", color="#d0d9e8", labelpad=14)
+                    color="#f5474f", saturation=0.75, fliersize=3, linewidth=1.15,
+                    medianprops={"color":"#ffe1b9", "linewidth":2.4},
+                    boxprops={"edgecolor":"#fbb0a9"}, whiskerprops={"color":"#c58d8f"},
+                    capprops={"color":"#c58d8f"})
+        ax.set_title("Distribución de la TRM · Análisis Seaborn", loc="left", fontsize=14, weight="bold", color="#fff2e5", pad=20)
+        ax.set_ylabel("COP por USD", color="#e1c7ba", labelpad=14)
         ax.set_xlabel("")
-        ax.tick_params(axis="x", colors="#a7b6ca", rotation=45, labelsize=8)
-        ax.tick_params(axis="y", colors="#a7b6ca", labelsize=9)
-        ax.grid(axis="y", color="#303b4d", alpha=.75)
+        ax.tick_params(axis="x", colors="#e1c7ba", rotation=45, labelsize=8)
+        ax.tick_params(axis="y", colors="#e1c7ba", labelsize=9)
+        ax.grid(axis="y", color="#3a262b", alpha=.75)
         ax.grid(axis="x", visible=False)
         for edge in ax.spines.values(): edge.set_visible(False)
         if len(order) > 28:
