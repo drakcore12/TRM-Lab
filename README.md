@@ -2,6 +2,8 @@
 
 Dashboard universitario en HTML + Python con **gráficos de cajas interactivos** y **gráficos Seaborn generados en el servidor**.
 
+**Identidad gráfica:** edición black/red de inspiración rock y grafiti, diseñada a medida con CSS, tipografía de cartel y marcador, y paleta coordinada también para Plotly y Seaborn. Diseño responsive para móvil y escritorio.
+
 ## Fuente y actualización
 
 Fuente primaria: Superintendencia Financiera de Colombia, por medio del conjunto **Tasa de Cambio Representativa del Mercado- TRM**, ID `32sa-8pi3` del Portal Nacional de Datos Abiertos.
@@ -38,7 +40,7 @@ Abrir `http://localhost:10000`. **No** abrir `static/index.html` directamente: d
 
 ## Publicar gratis en Render
 
-1. Crear un repositorio GitHub y subir **todos** los archivos del proyecto (Plotly se carga desde el CDN público).
+1. Crear un repositorio GitHub y subir **todos** los archivos del proyecto. Plotly se carga desde un CDN público.
 2. En Render: **New > Blueprint** y seleccionar el repositorio: `render.yaml` ya define servidor Python, instalación y comando de inicio.
 3. Una vez terminado el despliegue, abrir la URL `https://...onrender.com` y verificar que cargan gráficos.
 4. En Google Classroom entregar el enlace **del servicio Render**, no de GitHub. Como soporte opcional adjuntar `Codigo_Python_TRM.txt`.

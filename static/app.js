@@ -1,4 +1,4 @@
-/* TRM Lab. Interactividad con Plotly local y endpoints Python; no hay datos simulados. */
+/* TRM Lab. Interactividad con Plotly servido desde CDN y endpoints Python; no hay datos simulados. */
 (() => {
   'use strict';
   const $ = (id) => document.getElementById(id);
@@ -99,7 +99,7 @@
     $('mobileMenu').addEventListener('click',()=>{$('sidebar').classList.toggle('open')});
     document.querySelectorAll('.nav-link').forEach(a=>a.addEventListener('click',()=>{$('sidebar').classList.remove('open');document.querySelectorAll('.nav-link').forEach(x=>x.classList.toggle('active',x===a))}));
     window.setInterval(()=>{if(!document.hidden)load()},20*60*1000);
-    if(typeof Plotly==='undefined'){showError('No se pudo cargar Plotly. Revisa que static/plotly.min.js esté incluido en el proyecto.');return}
+    if(typeof Plotly==='undefined'){showError('No se pudo cargar Plotly. Revisa la conexión a internet o el acceso al CDN de Plotly.');return}
     load();
   }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',setup);else setup();
